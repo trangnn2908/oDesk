@@ -32,7 +32,7 @@ if (isset($_POST['send']) && $_POST['send'] == 'Send Flag') {
 	}
 }
 
-$title = "Racer | Send message"
+$title = "Racer | Control track"
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -42,55 +42,59 @@ $title = "Racer | Send message"
 	<body>
 		<div id="container">
 			<?php include_once 'nav.php'; ?>
-			<div style="margin: 0 auto; float: none; width: 960px;">
-				<div class="span6 text-center">
-					<input type="hidden" name="track-id" id="track-id" value="<?php echo $track_id ?>"/>
-					<h1>Flag color</h1>
-					<div class="flags-group">
-						<a href="javascript:;" title="Restart flag" class="btn-flag-restart"></a>
-						<a href="javascript:;" title="White flag" class="btn-flag-white"></a>
-						<a href="javascript:;" title="Finish flag" class="btn-flag-finish"></a>
-						<a href="javascript:;" title="Black flag" class="btn-flag-black"></a>
-						<br />							
-						<a href="javascript:;" title="Red flag" class="btn-flag-red"></a>
-						<a href="javascript:;" title="Green flag" class="btn-flag-green"></a>
-						<a href="javascript:;" title="Yellow flag" class="btn-flag-yellow"></a>
-						<a href="javascript:;" title="Safety flag" class="btn-flag-safety"></a>
-					</div>
-					<h1>Local</h1>
-					<div class="number-group">
-						<?php for ($i = 1; $i <= 25; $i ++) : ?>
-							<button id="flag-number-<?php echo $i ?>" title="Local <?php echo $i ?>"><?php echo $i ?></button>
-							<?php if ($i % 5 == 0) : ?>
-								<br />
-							<?php endif; ?>
-						<?php endfor; ?>
-					</div>
-					<div class="input-wrapper clearfix">
-						<button class="btn" type="submit" id="send-message" name="send" value="Send Flag">Send Message</button>
-						<div>
-							<input type="text" id="message" name="message" value="" placeholder="Message to send" />
+			<div class="container">
+				<div class="row">
+					<div class="span6 text-center">
+						<input type="hidden" name="track-id" id="track-id" value="<?php echo $track_id ?>"/>
+						<h1>Flag color</h1>
+						<div class="flags-group">
+							<a title="Restart flag" class="btn-flag-restart"></a>
+							<a title="White flag" class="btn-flag-white"></a>
+							<a title="Finish flag" class="btn-flag-finish"></a>
+							<a title="Black flag" class="btn-flag-black"></a>
+							<br />							
+							<a title="Red flag" class="btn-flag-red"></a>
+							<a title="Green flag" class="btn-flag-green"></a>
+							<a title="Yellow flag" class="btn-flag-yellow"></a>
+							<a title="Safety flag" class="btn-flag-safety"></a>
 						</div>
+						<h1>Local</h1>
+						<div class="number-group">
+							<?php for ($i = 1; $i <= 25; $i ++) : ?>
+								<a id="flag-number-<?php echo $i ?>" title="Local <?php echo $i ?>"><?php echo $i ?></a>
+								<?php if ($i % 5 == 0) : ?>
+									<br />
+								<?php endif; ?>
+							<?php endfor; ?>
+						</div>
+						<div class="input-wrapper clearfix">
+							<button class="btn" type="submit" id="send-message" name="send" value="Send Flag">Send Message</button>
+							<div>
+								<input type="text" id="message" name="message" value="" placeholder="Message to send" />
+							</div>
 
+						</div>
+						<a href="logout.php" class="btn btn-red">End Race Control</a>
 					</div>
-					<a href="logout.php" class="btn btn-red">End Race Control</a>
-				</div>
-				<div class="span5 text-center">
-					<h1>History</h1>
-					<table id='history-table' class="table table-bordered table-condensed table-striped">
-						<thead>
-							<tr>
-								<th width="90">Action</th>
-								<th>Message</th>
-								<th width="150">Sent time</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
+					<div class="span6 text-center">
+						<h1>History</h1>
+						<table id='history-table' class="table table-bordered table-condensed table-striped">
+							<thead>
+								<tr>
+									<th class="text-center" width="150">Action</th>
+									<th class="text-center" width="100">Message</th>
+									<th class="text-center" width="150">Sent time</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
-		
+		<div class="footer">
+			<?php include 'footer.php' ?>
+		</div>
 	</body>
 </html>

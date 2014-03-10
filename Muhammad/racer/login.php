@@ -32,5 +32,8 @@ $title = "Racer | Login page";
 				</form>
 			</div>
 		</div>
+		<div class="footer">
+			<?php include 'footer.php' ?>
+		</div>
 	</body>
 </html>

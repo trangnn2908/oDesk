@@ -1,28 +1,34 @@
 (function($) {
     $(function() {
-        $(".flag-select").click(function() {
-            var $type = $(this).attr('data-select-type'),
-                    $value = $(this).attr('data-select-value');
 
-            $("#flag-" + $type).val($value);
+        function alert_message(action, message, disable) {
+            if (action === 'show') {
+                var disable_class = disable === true ? ' disabled' : '';
+                $('body').append('<div id="loading" class="alert">' + message + '</div>', '<div class="modal-backdrop' + disable_class + '">');
+            } else {
+                $('#loading, .modal-backdrop').remove();
+            }
+        }
 
-            $(".flag-select[data-select-type='" + $type + "']").removeClass('disabled')
-
-            $(this).addClass('disabled');
+        $('body').on('click', '.modal-backdrop', function() {
+            if ($(this).hasClass('disabled')) {
+                // do nothing;
+            } else {
+                alert_message('hide');
+            }
         });
 
         $(".track-select").click(function() {
-            $(this).parent().children().removeClass('error');
-            $(this).addClass('error');
-            $("#" + $(this).attr('id') + " .track-id-radio").attr('checked', true);
+            $(this).addClass('error').siblings('tr').removeClass('error');
+            $("#track-id-selected").val($(this).attr('id'));
         });
 
         $("#start-race-button").click(function(e) {
             e.preventDefault();
-            var $track_id = $("input[name=track-id]:checked").val();
+            var $track_id = $("#track-id-selected").val();
 
-            if ($track_id === undefined) {
-                alert("You must be choose one and only one track to start race");
+            if ($track_id === undefined || $track_id === '') {
+                alert_message("show", "You must be choose one and only one track to start race");
                 return;
             } else {
                 window.location = "control.php?track_id=" + $track_id;
@@ -31,7 +37,9 @@
 
         function send_message(action, color, local, text) {
             var $track_id = $("#track-id").val();
-            $('body').append('<div id="loading" class="alert">Sending message ....</div>', '<div class="modal-backdrop">');
+
+            alert_message("show", "Sending message...", true);
+
             $.ajax({
                 url: "sendmessage.php",
                 data: {
@@ -43,7 +51,7 @@
                 },
                 success: function(data) {
                     if (data.error !== 0) {
-                        alert("Error: " + data.msg);
+                        alert_message("show", "Error: " + data.msg, true);
                     } else {
                         var service_data = data.data;
                         if (service_data !== null && service_data !== undefined) {
@@ -54,18 +62,30 @@
                             }
 
                             if (service_data.localFlags !== undefined) {
-                                $(".number-group button").removeClass('active');
+                                $(".number-group a").removeClass('active');
                                 $.each(service_data.localFlags, function(index, flag) {
                                     $("#flag-number-" + flag.number).addClass('active');
                                 });
                             }
+
+                            if (service_data.history !== undefined) {
+                                var history_tbody = "";
+                                $.each(service_data.history, function(index, history_entry) {
+                                    var time = new Date(history_entry.time);
+                                    var time_show = time.toLocaleDateString() + " " + time.toLocaleTimeString();
+                                    history_tbody += "<tr><td>" + history_entry.action + "</td><td>";
+                                    history_tbody += history_entry.message + "</td><td>";
+                                    history_tbody += time_show + "</td></tr>";
+                                });
+
+                                $("#history-table tbody").html(history_tbody);
+                            }
                         }
-                        var date = new Date();
-                        var sent_time = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-                        var html = "<tr><td>" + action + "</td><td>" + color + " " + local + " " + text + "</td><td>" + sent_time + "</td></tr>"
-                        $("#history-table tbody").prepend(html);
+
                     }
-                    setTimeout(function(){$('#loading, .modal-backdrop').remove()}, 500);
+                    setTimeout(function() {
+                        alert_message('hide')
+                    }, 500);
                 }
             });
         }
@@ -77,7 +97,7 @@
 
         });
 
-        $(".number-group button").click(function(e) {
+        $(".number-group a").click(function(e) {
             e.preventDefault();
             var $local = $(this).attr('id').replace("flag-number-", "");
             send_message('sendlocalflag', 'yellow', $local, '');

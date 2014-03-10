@@ -47,7 +47,6 @@ $title = 'Racer | List tracks';
 						<tr>
 							<th width="50">No.</th>
 							<th>Name</th>
-							<th width="10">&nbsp;</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -55,14 +54,16 @@ $title = 'Racer | List tracks';
 							<tr id="<?php echo $track['id'] ?>" class="track-select">
 								<td><?php echo $index + 1; ?></td>
 								<td><?php echo $track['name']; ?></td>
-								<td>
-									<input type="radio" name="track-id" class="track-id-radio" value="<?php echo $track['id'] ?>" />
-								</td>
 							</tr>
 						<?php endforeach; ?>
 					</tbody>
 				</table>
+				
+				<input type="hidden" name="track-id" id="track-id-selected" value="" />
 			</div>
+		</div>
+		<div class="footer">
+			<?php include 'footer.php' ?>
 		</div>
 	</body>
 </html>
