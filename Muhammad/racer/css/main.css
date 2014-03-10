@@ -4,7 +4,7 @@
 }
 
 .text-center {
-    text-align: center;
+    text-align: center !important;
 }
 
 [class^="btn-flag-"] {
@@ -17,6 +17,8 @@
     background-repeat: no-repeat;
     background-position: 50% 0;
     margin: 6px 1px;
+    outline: none;
+    cursor: pointer;
 }
 .btn-flag-restart {
     background-image: url(../img/flags/f1.png);
@@ -52,7 +54,7 @@
 .number-group {
     margin-bottom: 15px;
 }
-.number-group button {
+.number-group a {
     width: 63px;
     height: 63px;
     vertical-align: top;
@@ -71,8 +73,9 @@
     border-radius: 60px;
     background: #FFF;
     outline: none;
+    cursor: pointer;
 }
-.number-group button:hover, .number-group button:active, .number-group button.active {
+.number-group a:hover, .number-group a:active, .number-group a.active {
     background-color: #ffc641;
     color: #ffffff;
 }
@@ -91,6 +94,7 @@
     padding: 0 14px 3px
 }
 .input-wrapper > div input[type="text"] {
+    margin: 0;
     width: 100%;
     background: none;
     border: none; 
