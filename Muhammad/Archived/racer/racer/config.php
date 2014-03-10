@@ -9,8 +9,7 @@ return array(
 			'gettracks' => 'gettracks?spotterkey=',
 			'search-tracks' => 'searchtrack?spotterkey=',
 			'createevent' => 'createevent?spotterkey=',
-			'sendglobalflag' => 'sendglobalflag?spotterkey=',
-			'sendlocalflag' => 'sendlocalflag?spotterkey=',
+			'sendflag' => 'sendflag?spotterkey=',
 			'sendtext' => 'sendtext?spotterkey='
 		),
 	),

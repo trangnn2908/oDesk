@@ -2,8 +2,6 @@
 session_name('racer_web_app');
 session_start();
 
-set_time_limit(0);
-
 require_once 'service.php';
 
 $auth_key = Service::get_auth_key();
