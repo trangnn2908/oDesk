@@ -31,8 +31,7 @@
 
         function send_message(action, color, local, text) {
             var $track_id = $("#track-id").val();
-
-            $("#myModal").modal();
+            $('body').append('<div id="loading" class="alert">Sending message ....</div>', '<div class="modal-backdrop">');
             $.ajax({
                 url: "sendmessage.php",
                 data: {
@@ -43,7 +42,6 @@
                     text: text
                 },
                 success: function(data) {
-                    $("#myModal").modal('hide');
                     if (data.error !== 0) {
                         alert("Error: " + data.msg);
                     } else {
@@ -54,39 +52,41 @@
                                     $(".btn-flag-" + service_data.globalMessage.color).addClass('active').siblings("[class^='btn-flag-']").removeClass('active');
                                 }
                             }
-                            
-                            if(service_data.localFlags !== undefined) {
-                                $(".number-group a").removeClass('active');
+
+                            if (service_data.localFlags !== undefined) {
+                                $(".number-group button").removeClass('active');
                                 $.each(service_data.localFlags, function(index, flag) {
                                     $("#flag-number-" + flag.number).addClass('active');
                                 });
                             }
                         }
-
                         var date = new Date();
                         var sent_time = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-
                         var html = "<tr><td>" + action + "</td><td>" + color + " " + local + " " + text + "</td><td>" + sent_time + "</td></tr>"
                         $("#history-table tbody").prepend(html);
                     }
+                    setTimeout(function(){$('#loading, .modal-backdrop').remove()}, 500);
                 }
             });
         }
 
-        $("[class^='btn-flag-']").click(function() {
+        $("[class^='btn-flag-']").click(function(e) {
+            e.preventDefault();
             var $color = $(this).attr('class').replace("btn-flag-", "");
-            var data = send_message('sendglobalflag', $color, '', '');
+            send_message('sendglobalflag', $color, '', '');
+
         });
 
-        $(".number-group a").click(function() {
+        $(".number-group button").click(function(e) {
+            e.preventDefault();
             var $local = $(this).attr('id').replace("flag-number-", "");
-            var data = send_message('sendlocalflag', 'yellow', $local, '');
+            send_message('sendlocalflag', 'yellow', $local, '');
         });
 
         $("#send-message").click(function(e) {
             e.preventDefault();
             var $text = $("#message").val();
-            var data = send_message('sendtext', '', '', $text);
+            send_message('sendtext', '', '', $text);
         });
     });
 }(jQuery));

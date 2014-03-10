@@ -42,8 +42,8 @@ $title = "Racer | Send message"
 	<body>
 		<div id="container">
 			<?php include_once 'nav.php'; ?>
-			<div class="container-fluid">
-				<div class="span5 text-center">
+			<div style="margin: 0 auto; float: none; width: 960px;">
+				<div class="span6 text-center">
 					<input type="hidden" name="track-id" id="track-id" value="<?php echo $track_id ?>"/>
 					<h1>Flag color</h1>
 					<div class="flags-group">
@@ -60,7 +60,7 @@ $title = "Racer | Send message"
 					<h1>Local</h1>
 					<div class="number-group">
 						<?php for ($i = 1; $i <= 25; $i ++) : ?>
-							<a href="javascript:;" id="flag-number-<?php echo $i ?>" title="Local <?php echo $i ?>"><?php echo $i ?></a>
+							<button id="flag-number-<?php echo $i ?>" title="Local <?php echo $i ?>"><?php echo $i ?></button>
 							<?php if ($i % 5 == 0) : ?>
 								<br />
 							<?php endif; ?>
@@ -75,15 +75,14 @@ $title = "Racer | Send message"
 					</div>
 					<a href="logout.php" class="btn btn-red">End Race Control</a>
 				</div>
-				<div class="span1"></div>
-				<div class="span7 text-center">
+				<div class="span5 text-center">
 					<h1>History</h1>
 					<table id='history-table' class="table table-bordered table-condensed table-striped">
 						<thead>
 							<tr>
-								<th width="30%">Action</th>
-								<th width="40%">Message</th>
-								<th width="30%">Sent time</th>
+								<th width="90">Action</th>
+								<th>Message</th>
+								<th width="150">Sent time</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -92,15 +91,6 @@ $title = "Racer | Send message"
 				</div>
 			</div>
 		</div>
-		<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-header">
-				<h1>Sending message...</h1>
-			</div>
-			<div class="modal-body">
-				<div class="progress progress-striped active">
-					<div class="bar" style="width: 100%;"></div>
-				</div>
-			</div>
-		</div>
+		
 	</body>
 </html>
