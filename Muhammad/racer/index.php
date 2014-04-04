@@ -51,7 +51,7 @@ $title = 'Racer | List tracks';
 					</thead>
 					<tbody>
 						<?php foreach ($list_tracks as $index => $track) : ?>
-							<tr id="<?php echo $track['id'] ?>" class="track-select">
+							<tr id="<?php echo $track['id'] ?>" name="<?php echo $track['name'] ?>" class="track-select">
 								<td><?php echo $index + 1; ?></td>
 								<td><?php echo $track['name']; ?></td>
 							</tr>
@@ -60,6 +60,7 @@ $title = 'Racer | List tracks';
 				</table>
 				
 				<input type="hidden" name="track-id" id="track-id-selected" value="" />
+				<input type="hidden" name="track-id" id="track-name-selected" value="" />
 			</div>
 		</div>
 		<div class="footer">

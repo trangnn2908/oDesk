@@ -21,21 +21,23 @@
         $(".track-select").click(function() {
             $(this).addClass('error').siblings('tr').removeClass('error');
             $("#track-id-selected").val($(this).attr('id'));
+            $("#track-name-selected").val($(this).attr('name'));
         });
 
         $("#start-race-button").click(function(e) {
             e.preventDefault();
-            var $track_id = $("#track-id-selected").val();
+            var $track_id = $("#track-id-selected").val(),
+                    $track_name = $("#track-name-selected").val();
 
             if ($track_id === undefined || $track_id === '') {
                 alert_message("show", "You must be choose one and only one track to start race");
                 return;
             } else {
-                window.location = "control.php?track_id=" + $track_id;
+                window.location = "control.php?track_id=" + $track_id + "&track_name=" + $track_name;
             }
         });
 
-        function send_message(action, color, local, text) {
+        function send_message(action, color, local, waving, text) {
             var $track_id = $("#track-id").val();
 
             alert_message("show", "Sending message...", true);
@@ -46,7 +48,8 @@
                     track_id: $track_id,
                     action: action,
                     color: color,
-                    number: local,
+                    local: local,
+                    waving: waving,
                     text: text
                 },
                 success: function(data) {
@@ -61,10 +64,20 @@
                                 }
                             }
 
+                            if (service_data.safteyFlag === true) {
+                                $(".btn-flag-safety").addClass('active');
+                            } else if (service_data.safteyFlag === false) {
+                                $(".btn-flag-safety").removeClass('active');
+                            }
+
                             if (service_data.localFlags !== undefined) {
                                 $(".number-group a").removeClass('active');
+                                $(".number-group a > i").css({'display': 'none'});
                                 $.each(service_data.localFlags, function(index, flag) {
-                                    $("#flag-number-" + flag.number).addClass('active');
+                                    var waving_class = flag.isWaving === true ? 'waving' : 'standing',
+                                            a_id = "#flag-number-" + flag.number;
+                                    $(a_id).addClass('active');
+                                    $(a_id + " i").css({'display': 'block'}).html(waving_class);
                                 });
                             }
 
@@ -92,21 +105,41 @@
 
         $("[class^='btn-flag-']").click(function(e) {
             e.preventDefault();
-            var $color = $(this).attr('class').replace("btn-flag-", "");
+            var $color = $(this).removeClass('active').attr('class').replace("btn-flag-", "").trim();
             send_message('sendglobalflag', $color, '', '');
 
         });
 
         $(".number-group a").click(function(e) {
             e.preventDefault();
+            e.stopPropagation();
             var $local = $(this).attr('id').replace("flag-number-", "");
-            send_message('sendlocalflag', 'yellow', $local, '');
+            if ($(this).hasClass('active')) {
+                send_message('sendlocalflag', 'yellow', $local, 'false', '');
+            } else {
+                $('#local-type-select').css({'top': $(this).offset().top + 10, 'left': $(this).offset().left + 2, 'display': 'block'});
+                $("#local-type-select a").attr('data-local', $local);
+            }
+        });
+
+        $("#local-type-select a").click(function(e) {
+            e.preventDefault();
+            var $local = $(this).attr("data-local"),
+                    $waving = $(this).attr("data-waving");
+            send_message('sendlocalflag', 'yellow', $local, $waving, '');
+            $('#local-type-select').css({'display': 'none'});
         });
 
         $("#send-message").click(function(e) {
             e.preventDefault();
             var $text = $("#message").val();
             send_message('sendtext', '', '', $text);
+        });
+
+        $('body').click(function() {
+            if ($("#local-type-select").is(':visible') === true) {
+                $("#local-type-select").css({'display': 'none'});
+            }
         });
     });
 }(jQuery));

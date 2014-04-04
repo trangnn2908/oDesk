@@ -18,9 +18,10 @@ if (!$auth_key) {
 		$data = array('error' => 20, 'msg' => 'Track id or Action is invalid');
 	} else {
 		$color = isset($_GET['color']) ? $_GET['color'] : '';
-		$number = isset($_GET['number']) ? $_GET['number'] : '';
+		$local = isset($_GET['local']) ? $_GET['local'] : '';
+		$waving = isset($_GET['waving']) ? $_GET['waving'] : '';
 		$message = isset($_GET['text']) ? $_GET['text'] : '';
-		$data = Service::instance()->send_flag_text_to_service($auth_key, $track_id, $action, $color, $number, $message);
+		$data = Service::instance()->send_flag_text_to_service($auth_key, $track_id, $action, $color, $local, $waving, $message);
 	}
 }
 

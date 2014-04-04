@@ -11,6 +11,7 @@ if (!$auth_key) {
 }
 
 $track_id = isset($_GET['track_id']) ? $_GET['track_id'] : null;
+$track_name = isset($_GET['track_name']) ? $_GET['track_name'] : '';
 
 if (!$track_id) {
 	Service::redirect('index.php', 'Track id or Action is invalid', 'alert-error');
@@ -32,7 +33,7 @@ if (isset($_POST['send']) && $_POST['send'] == 'Send Flag') {
 	}
 }
 
-$title = "Racer | Control track"
+$title = "Racer | Control track : {$track_name}";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -46,7 +47,7 @@ $title = "Racer | Control track"
 				<div class="row">
 					<div class="span6 text-center">
 						<input type="hidden" name="track-id" id="track-id" value="<?php echo $track_id ?>"/>
-						<h1>Flag color</h1>
+						<h1>Global</h1>
 						<div class="flags-group">
 							<a title="Restart flag" class="btn-flag-restart"></a>
 							<a title="White flag" class="btn-flag-white"></a>
@@ -61,11 +62,17 @@ $title = "Racer | Control track"
 						<h1>Local</h1>
 						<div class="number-group">
 							<?php for ($i = 1; $i <= 25; $i ++) : ?>
-								<a id="flag-number-<?php echo $i ?>" title="Local <?php echo $i ?>"><?php echo $i ?></a>
+								<a id="flag-number-<?php echo $i ?>" title="Local <?php echo $i ?>"><?php echo $i ?> <i></i></a>
 								<?php if ($i % 5 == 0) : ?>
 									<br />
 								<?php endif; ?>
 							<?php endfor; ?>
+						</div>
+						<div id="local-type-select">
+							<ul>
+								<li><a href="javascript:;" data-local="0" data-waving="true">WAVING</a></li>
+								<li><a href="javascript:;" data-local="0" data-waving="false">STANDING</a></li>
+							</ul>
 						</div>
 						<div class="input-wrapper clearfix">
 							<button class="btn" type="submit" id="send-message" name="send" value="Send Flag">Send Message</button>

@@ -138,7 +138,7 @@ class Service {
 		}
 	}
 
-	public function send_flag_text_to_service($auth_key, $track_id, $action = '', $color = '', $number = 0, $message = '') {
+	public function send_flag_text_to_service($auth_key, $track_id, $action = '', $color = '', $local = 0, $iswaving = 'false', $message = '') {
 		if ($action && in_array($action, array('sendglobalflag', 'sendlocalflag', 'sendtext'))) {
 			$event_id = $this->get_event_id($auth_key, $track_id);
 			if ($event_id) {
@@ -150,19 +150,21 @@ class Service {
 						} else {
 							$param = array(
 								'eventid' => $event_id,
-								'color' => $color
+								'color' => $color,
+								'iswaving' => $iswaving,
 							);
 						}
 						break;
 					case 'sendlocalflag':
-						if (!$color || !$number) {
+						if (!$color || !$local) {
 							$error = 4;
 							$msg = 'Send local flag require local and color flag is yellow';
 						} else {
 							$param = array(
 								'eventid' => $event_id,
 								'color' => $color,
-								'number' => $number,
+								'number' => $local,
+								'iswaving' => $iswaving,
 							);
 						}
 						break;
