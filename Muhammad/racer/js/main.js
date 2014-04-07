@@ -133,7 +133,7 @@
         $("#send-message").click(function(e) {
             e.preventDefault();
             var $text = $("#message").val();
-            send_message('sendtext', '', '', $text);
+            send_message('sendtext', '', '', 'false', $text);
         });
 
         $('body').click(function() {

@@ -175,7 +175,9 @@ class Service {
 						} else {
 							$param = array(
 								'eventid' => $event_id,
-								'text' => $message,
+								'text' => urlencode($message),
+								'senderid' => $track_id,
+								'sendername' => "Racecontrol-{$event_id}",
 							);
 						}
 						break;
